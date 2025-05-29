@@ -181,12 +181,6 @@ module module_top(input logic clk,
             mux_val_2 = 4'd0;
             mux_val_3 = 4'd0;
         end
-        default: begin
-            mux_val_0 = 4'd0;
-            mux_val_1 = 4'd0;
-            mux_val_2 = 4'd0;
-            mux_val_3 = 4'd0;
-        end
     endcase
     end
 

@@ -35,10 +35,12 @@ module module_mult_booth#(
 
     // Suma o resta controlada
     always_comb begin
-        if (mult_control.add_sub)
-            adder_sub_out = HQ + M; // M + HQ; <- Error, debería ser HQ + M
-        else
-            adder_sub_out = HQ - M; // M - HQ; <- Error, debería ser HQ - M
+        if (mult_control.add_sub) begin
+            adder_sub_out = HQ + M; // <- Error, debería ser HQ + M
+        end
+        else begin
+            adder_sub_out = HQ - M; // <- Error, debería ser HQ - M
+        end
     end
 
     // registros de desplazamiento
@@ -54,12 +56,13 @@ module module_mult_booth#(
         if (rst)
             shift <= 'b0;
         else if (mult_control.shift_HQ_LQ_Q_1)
-            shift <= $signed(shift) >>> 1; // Desplazamiento aritmético
+        //Aritmetic right shift
+            shift <= $signed(shift) >>> 1;
         else begin
             if (mult_control.load_B)
-                shift[N:1] <= B;
+                shift[N:1] <= B; // LQ
             if (mult_control.load_add)
-                shift[2*N:N+1] <= adder_sub_out;
+                shift[2*N:N+1] <= adder_sub_out; //HQ
         end
     end
 
