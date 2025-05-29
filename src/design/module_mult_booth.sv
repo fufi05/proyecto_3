@@ -42,7 +42,7 @@ module module_mult_booth#(
             adder_sub_out = HQ - M; // <- Error, debería ser HQ - M
         end
     end
-
+    //prueba
     // registros de desplazamiento
     always_comb begin
         Y = {HQ, LQ};
