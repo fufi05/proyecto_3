@@ -4,7 +4,7 @@ module module_top(input logic clk,
                   input logic [3:0] fila,
                   output logic [15:0] suma);
     // Señales internas
-    logic tecla,stop,load_u, load_d, load_c, rdy, load_a, load_b,load_s,slow_clk;
+    logic tecla,stop,load_u, load_d, rdy, load_a, load_b,load_m,slow_clk;
     logic [1:0] count; 
     logic [11:0] a, b, bcd_out;
     logic [3:0] col_o, tecla_d, bcd_u, bcd_d, bcd_c;
@@ -53,7 +53,6 @@ module module_top(input logic clk,
         .tecla(tecla),
         .load_u(load_u),
         .load_d(load_d),
-        .load_c(load_c),
         .load_out(rdy)
     );
 
@@ -92,7 +91,7 @@ module module_top(input logic clk,
         .rdy(rdy),
         .load_a(load_a),
         .load_b(load_b),
-        .load_s(load_s));
+        .load_m(load_m));
 
     // Registro de desplazamiento para la FSM de operandos
     always_ff @(posedge clk)begin
@@ -135,7 +134,7 @@ module module_top(input logic clk,
             fuente_sel <= 2'b00; // Mostrando A
         else if (load_b)
             fuente_sel <= 2'b01; // Mostrando B
-        else if (load_s)
+        else if (load_m)
             fuente_sel <= 2'b10; // Mostrando resultado
         else
             fuente_sel <= 2'b00; // Default case when no condition is true

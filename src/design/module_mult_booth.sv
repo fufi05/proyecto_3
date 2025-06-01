@@ -36,14 +36,14 @@ module module_mult_booth#(
     // Suma o resta controlada
     always_comb begin
         if (mult_control.add_sub) begin
-            adder_sub_out = HQ + M; // <- Error, debería ser HQ + M
+            adder_sub_out = HQ + M; // <- Error, antes era M + HQ
         end
         else begin
-            adder_sub_out = HQ - M; // <- Error, debería ser HQ - M
+            adder_sub_out = HQ - M; // <- Error, debería ser M - HQ
         end
     end
-    //prueba
-    // registros de desplazamiento
+
+    // Registros de desplazamiento
     always_comb begin
         Y = {HQ, LQ};
         HQ = shift[2*N:N+1];

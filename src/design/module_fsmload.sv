@@ -3,15 +3,16 @@
                      input logic tecla,
                      output logic load_u,
                      output logic load_d,
-                     output logic load_c,
                      output logic load_out);
 
-    parameter S0 = 5'b00001;
-    parameter S1 = 5'b00010;
-    parameter S2 = 5'b00100;
-    parameter S3 = 5'b01000;
-    parameter S4 = 5'b10000;
-    logic [4:0] state, nextstate;
+// FSM encargada de gestionar la carga de las unidades y decenas del número BCD
+
+    parameter S0 = 4'b0001;
+    parameter S1 = 4'b0010;
+    parameter S2 = 4'b0100;
+    parameter S3 = 4'b1000;
+    logic [3:0] state, nextstate;
+
        // typedef enum logic [4:0] {S0,S1,S2,S3,S4} statetype; 
        // statetype state, nextstate;
 
@@ -31,17 +32,14 @@
         else nextstate = S0;
         S1: if(tecla) nextstate = S2;
         else nextstate = S1;
-        S2: if(tecla) nextstate = S3;
-        else nextstate = S2;
-        S3: nextstate = S4;
-        S4: nextstate = S0;
+        S2: nextstate = S3;
+        S3: nextstate = S0;
         default: nextstate = S0;
     endcase
  end
   // Output logic
     assign load_u = (state == S1);   // Señal activa durante S1
     assign load_d = (state == S2);   // Señal activa durante S2
-    assign load_c = (state == S3);   // Señal activa durante S3
-    assign load_out = (state == S4);   // Procesamiento completo
+    assign load_out = (state == S3);   // Procesamiento completo
  endmodule
  

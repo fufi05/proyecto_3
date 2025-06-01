@@ -1,4 +1,4 @@
-`timescale 1ns/1ps
+`timescale 1ns/1ns
 
 typedef struct packed {
     logic load_A;
@@ -41,32 +41,30 @@ module module_mult_booth_tb;
     rst = 1'b1;
     #10;
     rst = 1'b0;
+    mult_control.add_sub = 1'bx;
     #10;
-
-    // Inicialización de señales
+    // Nota: La señal mult_control.add_sub se inicializa como 'x' para evitar sumas o restas no deseadas al inicio.
     A = 8'b00001011; // 11
+    B = 8'b00001110; // 14
     mult_control.load_A = 1'b1;
     #10;
-   // mult_control.load_A = 1'bx;
-   // #10;
-    B = 8'b00001110; // 14
+    mult_control.load_A = 1'b0; // Desactivar carga de A
     mult_control.load_B = 1'b1;
     #10;
-    mult_control.load_add = 1'b1; // Activar carga de suma
-    #10;
-    mult_control.load_add = 1'b0; // Desactivar carga de A
-    #10;
+    mult_control.load_B = 1'b0; // Desactivar carga de B
+    
 // Iteraciones del algoritmo de Booth
     for (int i=0; i<N; i++)begin
       $display("Iteracion %0d: Q_LSB = %b", i, Q_LSB);
       if (Q_LSB == 2'b01) begin
         mult_control.add_sub = 1'b1; // Suma 
         #10;
-        mult_control.load_add = 1'b1;
+        mult_control.load_add = 1'b1; // activar carga de suma
         #10;
         mult_control.shift_HQ_LQ_Q_1 = 1'b1;
         #10;
         mult_control.shift_HQ_LQ_Q_1 = 1'b0;
+        #10;
       end
       else if (Q_LSB == 2'b10) begin
         mult_control.add_sub = 1'b0; // Resta
@@ -76,16 +74,25 @@ module module_mult_booth_tb;
         mult_control.shift_HQ_LQ_Q_1 = 1'b1;
         #10;
         mult_control.shift_HQ_LQ_Q_1 = 1'b0;
+        #10;
       end
       else if (Q_LSB == 2'b00 || Q_LSB == 2'b11)begin
+        mult_control.add_sub = 1'bx;
         mult_control.shift_HQ_LQ_Q_1 = 1'b1; // Desplazamiento
-        #5;
+        #10;
         mult_control.shift_HQ_LQ_Q_1 = 1'b0;
+        #10;
       end
       else begin
         $display("Error: Q_LSB no es valido: %b", Q_LSB);
       end
     end
+    #10;
+
+// Apagar señales de control después del ciclo
+    mult_control.load_add = 1'b0;
+    mult_control.shift_HQ_LQ_Q_1 = 1'b0;
+    mult_control.add_sub = 1'bx;
 
     #200;
     // Finalización de la simulación

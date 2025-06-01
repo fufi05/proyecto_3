@@ -1,6 +1,6 @@
   module module_7segmentos(input logic[3:0] data,
                     output logic[6:0] segmentos);
- always_comb
+ always_comb begin
  case(data)
                     // abc_defg
  4'b0000: segmentos=7'b111_1110;
@@ -15,4 +15,5 @@
  4'b1001: segmentos=7'b111_0011;
  default:segmentos=7'b000_0000;
  endcase
+ end
  endmodule

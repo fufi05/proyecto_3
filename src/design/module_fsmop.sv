@@ -3,7 +3,7 @@
                      input logic rdy,
                      output logic load_a,
                      output logic load_b,
-                     output logic load_s);
+                     output logic load_m);
     parameter S0 = 4'b0001;
     parameter S1 = 4'b0010;
     parameter S2 = 4'b0100;
@@ -41,6 +41,6 @@
   // Output logic
     assign load_a = (state == S1);
     assign load_b = (state == S2);
-    assign load_s = (state == S3);
+    assign load_m = (state == S3);
  endmodule
  
