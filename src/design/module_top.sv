@@ -2,12 +2,12 @@ module module_top(input logic clk,
                   input logic rst,
                   // input logic tecla,stop, // solo para este tb. Para el de verdad deben de ser señales internas
                   input logic [3:0] fila,
-                  output logic [15:0] suma);
+                  output logic [7:0] suma); //corregir, ahora es una multipliación
     // Señales internas
     logic tecla,stop,load_u, load_d, rdy, load_a, load_b,load_m,slow_clk;
     logic [1:0] count; 
-    logic [11:0] a, b, bcd_out;
-    logic [3:0] col_o, tecla_d, bcd_u, bcd_d, bcd_c;
+    logic [7:0] a, b, bcd_out;
+    logic [3:0] col_o, tecla_d, bcd_u, bcd_d;
 
     // Instancia del divisor de frecuencia 
     module_count clk_div(
@@ -56,7 +56,20 @@ module module_top(input logic clk,
         .load_out(rdy)
     );
 
-    //Instancia de registros de desplazamiento
+    // Registro de desplazamiento para las unidades, decenas y centenas
+    module_shift_reg_load shift1 (
+        .clk(clk),
+        .rst(rst),
+        .load_u(load_u),
+        .load_d(load_d),
+        .rdy(rdy),
+        .tecla_d(tecla_d),
+        .bcd_u(bcd_u),
+        .bcd_d(bcd_d),
+        .bcd_out(bcd_out)
+    );
+/*
+    //Instancia de registros de desplazamiento (convertir en un módulo)
     always_ff @(posedge clk) begin
         if (!rst) begin
             bcd_u <= '0;
@@ -83,6 +96,7 @@ module module_top(input logic clk,
             bcd_out <= bcd_out;
         end
     end
+    */
 
     // Instancia de la FSM de operandos
     module_fsmop fsm_op(
@@ -94,6 +108,14 @@ module module_top(input logic clk,
         .load_m(load_m));
 
     // Registro de desplazamiento para la FSM de operandos
+    module_shift_reg_op shift2 (
+        .clk(clk),
+        .rst(rst),
+        .load_a(load_a),
+        .load_b(load_b),
+        .a(a),
+        .b(b));
+    /*
     always_ff @(posedge clk)begin
         if (!rst)begin
             a <= '0;
@@ -110,8 +132,9 @@ module module_top(input logic clk,
                 b <= b; 
         end
         end
+        */
 
-    // Instancia de la suma 
+    // Instancia de la suma (cambiar por multiplicador)
     module_suma sumador(
         .a(a),
         .b(b),
