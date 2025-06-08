@@ -6,14 +6,14 @@
         fila[3]                      *       0       #       D           */
 
 module module_deco_tecladohex (
-    input  logic [3:0] fila,      // one-hot, activo en alto
-    input  logic [3:0] col,      // one-hot, activo en alto
+    // Decodificador de teclado Hexadecimal, falta agregar funcionalidad a los botones
+    input  logic [3:0] fila,      
+    input  logic [3:0] col,
     output logic [3:0] num // número en binario natural
 );
 logic [7:0] d;
 assign d = {fila, col}; // concatenación de fila y columna
     always_comb begin
-        num = 4'b0000; // valor por defecto
         case (d)
             8'b0001_0001: num = 4'b0001;     // 1-fila[0], col[0]
             8'b0001_0010: num = 4'b0010;    // 2

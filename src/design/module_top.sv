@@ -68,35 +68,6 @@ module module_top(input logic clk,
         .bcd_d(bcd_d),
         .bcd_out(bcd_out)
     );
-/*
-    //Instancia de registros de desplazamiento (convertir en un módulo)
-    always_ff @(posedge clk) begin
-        if (!rst) begin
-            bcd_u <= '0;
-            bcd_d <= '0;
-            bcd_c <= '0;
-            bcd_out <= '0;
-        end 
-        else if (load_u) begin
-                 bcd_u <= tecla_d;
-            end
-        else if (load_d) begin
-                 bcd_d <= tecla_d;
-            end
-        else if (load_c) begin
-                 bcd_c <= tecla_d;
-            end
-        else if (rdy) begin
-                bcd_out <= {bcd_u, bcd_d, bcd_c};
-            end
-        else begin
-            bcd_u <= bcd_u;
-            bcd_d <= bcd_d;
-            bcd_c <= bcd_c;
-            bcd_out <= bcd_out;
-        end
-    end
-    */
 
     // Instancia de la FSM de operandos
     module_fsmop fsm_op(
@@ -115,24 +86,6 @@ module module_top(input logic clk,
         .load_b(load_b),
         .a(a),
         .b(b));
-    /*
-    always_ff @(posedge clk)begin
-        if (!rst)begin
-            a <= '0;
-            b <= '0;
-        end
-        else if (load_a) begin
-                a <= bcd_out;
-            end
-        else if (load_b) begin
-                b <= bcd_out;
-            end
-        else begin
-                a <= a;
-                b <= b; 
-        end
-        end
-        */
 
     // Instancia de la suma (cambiar por multiplicador)
     module_suma sumador(
@@ -141,87 +94,6 @@ module module_top(input logic clk,
         .s(suma)
     );
 
-    //Sistema de despliegue de los operandos y suma
-    // Señales internas
-    logic [1:0] fuente_sel;
-    logic [3:0] a_u,a_d,a_c,b_u,b_d,b_c,s_u,s_d,s_c,s_um,mux_val_0, mux_val_1, mux_val_2, mux_val_3,out;
-    logic [6:0] segmentos;
-
-    // Selector de la señal de salida
-    always_ff @(posedge clk) begin
-    if (!rst) begin
-        fuente_sel <= 2'b00; // Default: mostrar A
-    end 
-    else begin
-        if (load_a)
-            fuente_sel <= 2'b00; // Mostrando A
-        else if (load_b)
-            fuente_sel <= 2'b01; // Mostrando B
-        else if (load_m)
-            fuente_sel <= 2'b10; // Mostrando resultado
-        else
-            fuente_sel <= 2'b00; // Default case when no condition is true
-        end
-    end 
-
-    assign a_u = a[3:0];
-    assign a_d = a[7:4];
-    assign a_c = a[11:8];
-    assign b_u = b[3:0];
-    assign b_d = b[7:4];
-    assign b_c = b[11:8];
-    assign s_u = suma[3:0];
-    assign s_d = suma[7:4];
-    assign s_c = suma[11:8];
-    assign s_um = suma[15:12]; 
-
-    // Instancia de que valores se van a mostrar
-    always_comb begin
-    // Default = A
-    case (fuente_sel)
-        2'b00: begin // A
-            mux_val_0 = a_u;
-            mux_val_1 = a_d;
-            mux_val_2 = a_c;
-            mux_val_3 = 4'd0;
-        end
-        2'b01: begin // B
-            mux_val_0 = b_u;
-            mux_val_1 = b_d;
-            mux_val_2 = b_c;
-            mux_val_3 = 4'd0;
-        end
-        2'b10: begin // Suma
-            mux_val_0 = s_u;
-            mux_val_1 = s_d;
-            mux_val_2 = s_c;
-            mux_val_3 = s_um;
-        end
-        default: begin
-            mux_val_0 = 4'd0;
-            mux_val_1 = 4'd0;
-            mux_val_2 = 4'd0;
-            mux_val_3 = 4'd0;
-        end
-    endcase
-    end
-
-    module_mux_onehot mux_onehot(
-        .sel(fuente_sel),
-        .out2(out2)
-    );
-
-    module_mux_4to1 valores(
-        .unidades(mux_val_0),
-        .decenas(mux_val_1),
-        .centenas(mux_val_2),
-        .millares(mux_val_3),
-        .sel(fuente_sel),
-        .out(out)
-    );
-    module_7segmentos display(
-        .data(out),
-        .segmentos(segmentos)
-        //de aqui salen las unidades en forma para el siete segmentos y ser mandadas al mux
-    );
+    // Instancia del sistema de despliegue 
+    
 endmodule 
