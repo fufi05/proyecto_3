@@ -64,9 +64,9 @@ module module_top(input logic clk,
         .load_d(load_d),
         .rdy(rdy),
         .tecla_d(tecla_d),
-        .bcd_u(bcd_u),
-        .bcd_d(bcd_d),
-        .bcd_out(bcd_out)
+        .uni(bcd_u),
+        .dec(bcd_d),
+        .out(bcd_out)
     );
 
     // Instancia de la FSM de operandos
@@ -84,6 +84,7 @@ module module_top(input logic clk,
         .rst(rst),
         .load_a(load_a),
         .load_b(load_b),
+        .num(bcd_out),
         .a(a),
         .b(b));
 

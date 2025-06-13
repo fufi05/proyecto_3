@@ -6,30 +6,30 @@
     input logic load_d,
     input logic rdy,
     input logic [3:0] tecla_d,
-    output logic [3:0] bcd_u,
-    output logic [3:0] bcd_d,
-    output logic [7:0] bcd_out
+    output logic [3:0] uni,
+    output logic [3:0] dec,
+    output logic [7:0] out
 
  );
     always_ff @(posedge clk) begin
         if (!rst) begin
-            bcd_u <= '0;
-            bcd_d <= '0;
-            bcd_out <= '0;
+            uni <= '0;
+            dec <= '0;
+            out <= '0;
         end 
         else if (load_u) begin
-                 bcd_u <= tecla_d;
+                 uni <= tecla_d;
             end
         else if (load_d) begin
-                 bcd_d <= tecla_d;
+                 dec <= tecla_d;
             end
         else if (rdy) begin
-                bcd_out <= {bcd_d,bcd_u};
+                out <= {dec,uni};
             end
         else begin
-            bcd_u <= bcd_u;
-            bcd_d <= bcd_d;
-            bcd_out <= bcd_out;
+            uni <= uni;
+            dec <= dec;
+            out <= out;
         end
     end
 endmodule

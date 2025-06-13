@@ -1,0 +1,59 @@
+$date
+	Thu Jun 12 23:28:17 2025
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module module_decobinabcd_tb $end
+$var wire 4 ! uni [3:0] $end
+$var wire 4 " dec [3:0] $end
+$var reg 8 # b [7:0] $end
+$scope module dut $end
+$var wire 8 $ b [7:0] $end
+$var reg 4 % dec [3:0] $end
+$var reg 4 & uni [3:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b101 &
+b100 %
+b101101 $
+b101101 #
+b100 "
+b101 !
+$end
+#1
+b0 !
+b0 &
+b1 "
+b1 %
+b1010 #
+b1010 $
+#2
+b1 !
+b1 &
+b1000 "
+b1000 %
+b1010001 #
+b1010001 $
+#3
+b101 !
+b101 &
+b0 "
+b0 %
+b101 #
+b101 $
+#4
+b0 !
+b0 &
+b1100011 #
+b1100011 $
+#5
