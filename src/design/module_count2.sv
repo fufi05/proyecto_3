@@ -1,5 +1,5 @@
-module module_count #(
-    parameter count = 1350000
+module module_count2 #(
+    parameter count = 1000000
 )(
     input logic clk,
     input logic rst,

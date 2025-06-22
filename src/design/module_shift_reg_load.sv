@@ -12,7 +12,7 @@
 
  );
     always_ff @(posedge clk) begin
-        if (!rst) begin
+        if (rst) begin
             uni <= '0;
             dec <= '0;
             out <= '0;

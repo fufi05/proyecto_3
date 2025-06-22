@@ -1,5 +1,5 @@
 module module_ffdesp(
-    // Flip flop para guardar operandos de unidaes y decenas antes de ser enviadas
+    // Flip flop para guardar operandos de unidades y decenas antes de ser enviadas
     // al sistema de despliegue
     input logic clk,
     input logic rst,
@@ -9,7 +9,7 @@ module module_ffdesp(
     output logic [3:0] op_d
 );
 always_ff@(posedge clk)begin
-    if (!rst) begin
+    if (rst) begin
         op_u <= '0;
         op_d <= '0;
     end
