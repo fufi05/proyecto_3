@@ -9,7 +9,7 @@ module module_shift_reg_op(
 );
 
 always_ff @(posedge clk)begin
-        if (!rst)begin
+        if (rst)begin
             a <= '0;
             b <= '0;
         end

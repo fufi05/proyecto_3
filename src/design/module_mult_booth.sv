@@ -7,7 +7,7 @@ typedef struct packed {
 } mult_control_t;
 
 module module_mult_booth#(
-    parameter N = 8
+    parameter N = 4
 )(
     input logic clk,
     input logic rst,

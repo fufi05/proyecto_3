@@ -5,7 +5,7 @@ module module_2bitcounter( input  logic  clk,
     logic [1:0] count; // Contador de 2 bits
 
     always_ff @(posedge clk) begin
-        if (!rst) begin
+        if (rst) begin
            count <= 2'b00; 
         end
         else if (stop) begin
