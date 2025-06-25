@@ -42,7 +42,7 @@ module contador(
 );
     logic [4:0] count;
     always_ff @ (posedge clk) begin
-        if (!rst) begin
+        if (rst) begin
             count <= 5'd0;
             flg   <= 1'b0;
         end
@@ -74,7 +74,7 @@ module dff(
     output logic q
 );
     always_ff @ (posedge clk) begin
-        if (!rst)   q <= 1'b0;
+        if (rst)   q <= 1'b0;
         else        q <= d;
     end
 endmodule

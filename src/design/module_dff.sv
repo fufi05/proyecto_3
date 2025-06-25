@@ -1,21 +1,17 @@
-module module_ffdesp(
+module module_dff(
     // Flip flop para guardar operandos de unidades y decenas antes de ser enviadas
     // al sistema de despliegue
     input logic clk,
     input logic rst,
-    input logic [3:0] mux_datos_u,
-    input logic [3:0] mux_datos_d,
-    output logic [3:0] op_u,
-    output logic [3:0] op_d
+    input logic [3:0] d,
+    output logic [3:0] q
 );
 always_ff@(posedge clk)begin
     if (rst) begin
-        op_u <= '0;
-        op_d <= '0;
+        q <= 4'0000;
     end
     else begin
-        op_u <= mux_datos_u;
-        op_d <= mux_datos_d;
+        q <= d;
     end
 end
 endmodule

@@ -1,6 +1,6 @@
  module module_fsmop(input logic clk,
                      input logic rst,
-                     input logic rdy,
+                     input logic tecla,
                      output logic load_a,
                      output logic load_b,
                      output logic load_m);
@@ -24,11 +24,11 @@
  //next state logic
  always_comb begin
     case(state)
-        S0: if(rdy) begin nextstate = S1;
+        S0: if(tecla) begin nextstate = S1;
         end
         else begin nextstate = S0;
         end
-        S1: if(rdy)  begin 
+        S1: if(tecla)  begin 
             nextstate = S2;
         end
         else begin nextstate = S1;

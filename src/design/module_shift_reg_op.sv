@@ -3,9 +3,9 @@ module module_shift_reg_op(
     input logic rst,
     input logic load_a,
     input logic load_b,
-    input logic [7:0] num,
-    output logic [7:0] a,
-    output logic [7:0] b
+    input logic [3:0] num,
+    output logic [3:0] a,
+    output logic [3:0] b
 );
 
 always_ff @(posedge clk)begin

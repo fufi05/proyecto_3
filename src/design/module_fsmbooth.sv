@@ -1,7 +1,7 @@
 module module_fsmbooth(
     input logic clk, rst, init, z,
     input logic [1:0] Q_LSB,
-    output logic load_A, load_B, load_add, shift_HQ_LQ_Q_1, add_sub, done
+    output logic step,load_A, load_B, load_add, shift_HQ_LQ_Q_1, add_sub, done
 );
     parameter IDLE = 7'b0000001;
     parameter S0 = 7'b0000010;
