@@ -1,8 +1,21 @@
+typedef struct packed {
+    logic load_A;
+    logic load_B;
+    logic load_add;
+    logic shift_HQ_LQ_Q_1;
+    logic add_sub;
+} control_t;
+
 module module_fsmbooth(
-    input logic clk, rst, init, z,
+    input logic clk, 
+    input logic rst, 
+    input logic init,
+    input logic z,
     input logic [1:0] Q_LSB,
-    output logic step,load_A, load_B, load_add, shift_HQ_LQ_Q_1, add_sub, done
-);
+    output logic step,
+    output logic done,
+    output control_t control
+    );
     parameter IDLE = 7'b0000001;
     parameter S0 = 7'b0000010;
     parameter S1 = 7'b0000100;
@@ -11,8 +24,6 @@ module module_fsmbooth(
     parameter S4 = 7'b0100000;
     parameter S5 = 7'b1000000;
     logic [6:0] state, nextstate;
-       // typedef enum logic [4:0] {IDLE,S0,S1,S2,S3} statetype; 
-       // statetype state, nextstate;
 
  //state register
  always_ff @(posedge clk) begin
@@ -48,67 +59,75 @@ module module_fsmbooth(
     always_comb begin
         case (state)
             IDLE: begin
-                load_A = '0;
-                load_B = '0;
-                load_add = '0;
-                shift_HQ_LQ_Q_1 = '0;
-                add_sub = 'x;
+                control.load_A = '0;
+                control.load_B = '0;
+                control.load_add = '0;
+                control.shift_HQ_LQ_Q_1 = '0;
+                control.add_sub = 'x;
                 done = '0;
+                step = '0; // No se da un paso en el estado IDLE
             end
             S0: begin
-                load_A = '1; // Carga A
-                load_B = '1; // Carga B
-                load_add = '1;
-                shift_HQ_LQ_Q_1 = '0;
-                add_sub = 'x;
+                control.load_A = '1; // Carga A
+                control.load_B = '1; // Carga B
+                control.load_add = '1;
+                control.shift_HQ_LQ_Q_1 = '0;
+                control.add_sub = 'x;
                 done = '0;
+                step = '0;
             end
             S1: begin
-                load_A = '0;
-                load_B = '0;
-                load_add = '0;
-                shift_HQ_LQ_Q_1 = '0;
-                add_sub = 'x;
+                control.load_A = '0;
+                control.load_B = '0;
+                control.load_add = '0;
+                control.shift_HQ_LQ_Q_1 = '0;
+                control.add_sub = 'x;
                 done = '0;
+                step = '0; 
             end
             S2: begin
-                load_A = '0;
-                load_B = '0;
-                load_add = '1;
-                shift_HQ_LQ_Q_1 = '0;
-                add_sub = '1; // Suma
+                control.load_A = '0;
+                control.load_B = '0;
+                control.load_add = '1;
+                control.shift_HQ_LQ_Q_1 = '0;
+                control.add_sub = '1; // Suma
                 done = '0;
+                step = '0; 
             end
             S3: begin
-                load_A = '0;
-                load_B = '0;
-                load_add = '1; // Carga resta
-                shift_HQ_LQ_Q_1 = '0;
-                add_sub = '0; // Resta
+                control.load_A = '0;
+                control.load_B = '0;
+                control.load_add = '1; // Carga resta
+                control.shift_HQ_LQ_Q_1 = '0;
+                control.add_sub = '0; // Resta
                 done = '0;
+                step = '0;
             end
             S4: begin
-                load_A = '0;
-                load_B = '0;
-                load_add = '0; // No carga nada, solo desplaza
-                shift_HQ_LQ_Q_1 = '1; // Desplaza
-                add_sub = 'x; // No suma ni resta en este paso
+                control.load_A = '0;
+                control.load_B = '0;
+                control.load_add = '0; // No carga nada, solo desplaza
+                control.shift_HQ_LQ_Q_1 = '1; // Desplaza
+                control.add_sub = 'x; // No suma ni resta en este paso
                 done = '0;
+                step = '1;
             end
             S5: begin
-                load_A = '0;
-                load_B = '0;
-                load_add = '0; // No carga nada, espera a z para decidir el siguiente paso
-                shift_HQ_LQ_Q_1 = '0; // No desplaza en este paso, espera a z
-                add_sub = '0; // No suma ni resta en este paso, espera a z para decidir el siguiente paso
+                control.load_A = '0;
+                control.load_B = '0;
+                control.load_add = '0; // No carga nada, espera a z para decidir el siguiente paso
+                control.shift_HQ_LQ_Q_1 = '0; // No desplaza en este paso, espera a z
+                control.add_sub = 'x; // No suma ni resta en este paso, espera a z para decidir el siguiente paso
                 done = (z) ? '1 : '0;
+                step = '0;
             end
         default: begin
-                load_A = '0;
-                load_B = '0;
-                load_add = '0;
-                shift_HQ_LQ_Q_1 = '0;
-                add_sub = 'x;
+                control.load_A = '0;
+                control.load_B = '0;
+                control.load_add = '0;
+                control.shift_HQ_LQ_Q_1 = '0;
+                control.add_sub = 'x;
+                step = '0;
                 done = '0;
             end
         endcase

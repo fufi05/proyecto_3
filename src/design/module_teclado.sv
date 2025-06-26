@@ -2,20 +2,17 @@ module module_teclado(
     input logic clk,
     input logic rst,
     input logic [3:0] fila,
-    output logic [3:0] col,
-    output logic tecla
+    output logic [3:0] a,
+    output logic [3:0] b,
+    output logic load_a,
+    output logic load_b,
+    output logic rdy
 );
 logic [1:0] count;
 logic [3:0] out;
-logic stop;
-/*
-// Instancia del divisor de frecuencia 
-    module_count clk_div(
-        .clk(clk),
-        .rst(rst),
-        .count_out(slow_clk)
-    );
-*/
+logic [3:0] col;
+logic stop, tecla;
+
     // Instancia del contador de 2 bits
     module_2bitcounter twobitcounter(
         .clk(clk),
@@ -44,6 +41,28 @@ logic stop;
         .fila(fila),
         .col(out),
         .num(col)
+    );
+
+    // Instancia del FSM para capturar numeros del teclado
+    module_fsmop fsmop (
+        .clk(clk),
+        .rst(rst),
+        .tecla(tecla),
+        .load_a(load_a),
+        .load_b(load_b),
+        .load_m(rdy)
+    );
+
+    // Instancia del registro de desplazamiento
+    // para almacenar los valores de las columnas
+    module_shift_reg_op shift_reg_op (
+        .clk(clk),
+        .rst(rst),
+        .load_a(load_a),
+        .load_b(load_b),
+        .num(col),
+        .a(a),
+        .b(b)
     );
 
 endmodule

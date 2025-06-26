@@ -4,14 +4,14 @@ module module_top_tb;
 
     logic clk, rst;
     logic [3:0] fila;
-    logic [15:0] suma;
+    logic [7:0] m;
 
     // Instancia del DUT
     module_top dut (
         .clk(clk),
         .rst(rst),
         .fila(fila),
-        .suma(suma)
+        .m(m)
     );
 
     // Clock lento para depuración
@@ -20,7 +20,24 @@ module module_top_tb;
 
 
     initial begin
+        rst = 1'b1;
+        fila = 4'b0;
+        #20;
         rst = 1'b0;
+        #20;
+        fila = 4'b0001;
+        #20;
+        fila = 4'b0100;
+        #20;
+        fila = 4'b0001;
+        #20;
+        fila = 4'b0100; 
+        #20;
+        fila = 4'b0001;
+        #20;
+        fila = 4'b0100;
+        #20;
+
         fila = 4'b0;
         #20;
         rst = 1'b1;
@@ -39,8 +56,8 @@ module module_top_tb;
         #20;
 
         // Esperar resultado
-        #550;
-        $display("filas presionadas: %b, | Salida: %h", fila,suma);
+        #1000;
+        $display("filas presionadas: %b, | Salida: %h", fila,m);
         $finish;
     end
     initial begin

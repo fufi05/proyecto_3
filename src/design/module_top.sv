@@ -1,30 +1,51 @@
-module module_top(input logic clk,
-                  input logic rst,
-                  input logic [3:0] fila,
-                  output logic [7:0] mult); //corregir, ahora es una multipliación
-    // Señales internas
-    logic [3:0] numero,a,b;
-    logic tecla, load_a, load_b, init;
+module module_top (
+    input logic clk,
+    input logic rst,
+    input logic [3:0] fila,
+    output logic [6:0] m // prueba
+   // output logic [1:0] anodo,
+   // output logic [6:0] catodo
+);
+logic [3:0] a, b;
+// logic [7:0] m;
+logic load_a, load_b, rdy;
 
-    //Instancia del modulo del teclado
-    module_teclado teclado(
-        .clk(clk),
-        .rst(rst),
-        .fila(fila),
-        .col(numero),
-        .tecla(tecla)
-    );
+//Teclado
+module_teclado teclado(
+    .clk(clk),
+    .rst(rst),
+    .fila(fila),
+    .a(a),
+    .b(b),
+    .load_a(load_a),
+    .load_b(load_b),
+    .rdy(rdy)
+);
+ //Multiplicador
+module_multiplicador #(.N(4)) multiplicador (
+    .clk(clk),
+    .rst(rst),
+    .init(rdy),
+    .a(a),
+    .b(b),
+    .p(m)
+);
 
-    //Instancia de la FSM de carga de numeros
-    module_fsmop fsmop(
-        .clk(clk),
-        .rst(rst),
-        .tecla(tecla),
-        .load_a(load_a),
-        .load_b(load_b),
-        .load_m(init)
-    );
+//Despliegue
+/*module_despliegue despliegue (
+    .clk(clk),
+    .rst(rst),
+    .load_a(load_a),
+    .load_b(load_b),
+    .load_m(rdy),
+    .a(a),
+    .b(b),
+    .m(m),
+    .catodo(catodo),
+    .anodo(anodo)
+);*/ 
 
+<<<<<<< Updated upstream
     module_shift_reg_op shift_reg_op(
         .clk(clk),
         .rst(rst),
@@ -44,3 +65,6 @@ module module_top(input logic clk,
 
     )
 endmodule 
+=======
+endmodule
+>>>>>>> Stashed changes

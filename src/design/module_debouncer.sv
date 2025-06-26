@@ -32,7 +32,7 @@ endmodule
 
 
 //-----------------------------------------------------------------------------
-// Contador: flg = 1 durante 1 ciclo cuando `in` lleva 16 clocks estables
+// Contador: flg = 1 durante 1 ciclo cuando `in` lleva x clocks estables
 //-----------------------------------------------------------------------------
 module contador(
     input  logic       clk,
@@ -40,16 +40,16 @@ module contador(
     input  logic       in,
     output logic       flg
 );
-    logic [4:0] count;
+    logic [2:0] count;
     always_ff @ (posedge clk) begin
         if (rst) begin
-            count <= 5'd0;
+            count <= 3'd0;
             flg   <= 1'b0;
         end
         else if (in) begin
-            // cuenta hasta 25, luego dispara flg y resetea
-            if (count == 5'd25) begin
-                count <= 5'd0;
+            // cuenta hasta 5, luego dispara flg y resetea
+            if (count == 3'd7) begin
+                count <= count;
                 flg   <= 1'b1;
             end else begin
                 count <= count + 1;
@@ -57,7 +57,7 @@ module contador(
             end
         end
         else begin
-            count <= 5'd0;
+            count <= 3'd0;
             flg   <= 1'b0;
         end
     end
