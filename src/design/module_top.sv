@@ -36,5 +36,11 @@ module module_top(input logic clk,
     );
 
     //Instancia del modulo de multiplicación
-    
+    module_mult_booth multipliación(
+        .clk(clk),
+        .rst(rst),
+        .A(a),
+        .A(b),
+
+    )
 endmodule 
