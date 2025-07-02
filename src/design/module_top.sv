@@ -45,26 +45,4 @@ module_multiplicador #(.N(4)) multiplicador (
     .anodo(anodo)
 );*/ 
 
-<<<<<<< Updated upstream
-    module_shift_reg_op shift_reg_op(
-        .clk(clk),
-        .rst(rst),
-        .load_a(load_a),
-        .load_b(load_b),
-        .num(numero),
-        .a(a),
-        .b(b)
-    );
-
-    //Instancia del modulo de multiplicación
-    module_mult_booth multipliación(
-        .clk(clk),
-        .rst(rst),
-        .A(a),
-        .A(b),
-
-    )
 endmodule 
-=======
-endmodule
->>>>>>> Stashed changes

@@ -40,8 +40,6 @@ module module_top_tb;
 
         fila = 4'b0;
         #20;
-        rst = 1'b1;
-        #20;
         fila = 4'b0001;
         #20;
         fila = 4'b0100;
