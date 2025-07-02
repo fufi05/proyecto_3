@@ -49,34 +49,43 @@ Este subsistema toma el resultado en formato binario y lo decodifica en formato 
 #### 3.1. Diagrama general del sistema
 En el presente diagrama se muestra un esquema general de las conexiones del sistema. Se tiene como entrada las filas, el reloj y un botón de reset que reinicia el sistema. Como salida se tiene el resultado de la multiplicación de los números y su presentación en el sistema de despliegue.
 
-![[Captura de pantalla 2025-07-01 111147.png]]
+![general](https://github.com/user-attachments/assets/8cabc4eb-ecba-42cf-b854-d3b86b4e966a)
+
 
 #### 3.2. FSM carga de dígitos
 Esta máquina de estados es la encargada de cargar los números en función de una señal de control llamada `tecla`. Este pulso proviene del sistema de lectura y es el encargado de señalar si se ha presionado una tecla o no. Cuando ya se han cargado todos los dígitos, esta máquina da como salida una señal `load_m`, la cual será una señal de control en la siguiente máquina de estados.
 
-![[Captura de pantalla 2025-07-01 111155.png]]
+![fsm_numeros](https://github.com/user-attachments/assets/7d3a0539-5994-4c5b-910f-468ad10f25f9)
+
 
 #### 3.3 FSM Booth
 Esta FSM es la encargada de controlar el multiplicador de Booth proporcionado por el docente. Está basado en el ASM que se encuentra en el instructivo de la tarea y controla al multiplicador mediante señales de control `add_sub`, `shift`, `load_add`, etc. En resumen, cuando recibe una señal `init` comienza su funcionamiento. En `S0` reinicia el acumulador, establece el bit menos significativo del registro Q en 0, Almacena el multiplicando en el registro M y guarda el multiplicador en los bits restantes de Q. En `S1` compara los dos bits menos significativos de Q y decide si ir a `S2`, `S3` o `S4`. Cabe resaltar que independientemente del camino que tome la FSM, esta siempre debe llegar a `S4`. Por último, en `S5`  si el contador es cero entonces la multiplicación termina, si no, vuelve al estado `S1`.
 
-![[Captura de pantalla 2025-07-01 111811.png]]
+![fsm_booth](https://github.com/user-attachments/assets/94f84647-1d78-40d4-b982-801c12978fb4)
+
+
 #### 3.4. Sistema de lectura de teclado
 Este subsistema permite capturar los dígitos ingresados desde un teclado hexadecimal matricial. Utiliza un contador de 2 bits para generar el barrido lógico de columnas, mientras se monitorean las filas para detectar pulsaciones. Las señales pasan por un debouncer que elimina rebotes mecánicos y generan un pulso limpio (`tecla`). Luego, un decodificador identifica la tecla presionada a partir de la combinación fila-columna. La FSM de carga controla la secuencia de registro de los números ingresados para ser procesados por el multiplicador.
 
-![[teclado.jpg]]
+![teclado](https://github.com/user-attachments/assets/697678a6-99fc-46cc-9851-daa3b4e721bc)
+
 
 #### 3.5. Sistema de despliegue
 Este sistema muestra los operandos A, B y la multiplicación mediante un selector y un controlador de siete segmentos. La señal `SEL` viene codificada de la salida de la FSM de operandos. Dependiendo de la selección de dígitos, estos pasan por un decodificador de binario a BCD para pasar al controlador de 7 segmentos. Este controlador es controlado (valga la redundancia) por un contador de anillo que enciende los ánodos cuando un contador llega a `count_en`.
 
-![[despliegue.jpg]]
+![despliegue](https://github.com/user-attachments/assets/c5a3ff0a-a76d-47fd-bd35-8efdc53342cc)
 
-![[Captura de pantalla 2025-07-01 111210.png]]
+
+![contador_anillo](https://github.com/user-attachments/assets/b0b841c6-d02a-41a5-abed-ef51793aa8d4)
+
 
 # 4. Simulaciones y consumo de recursos
 En esta sección se muestra el tb ejecutado para comprobar el funcionamiento del sistema, así también como el consumo de recursos.
 ### 4.1. Testbench
 
-![[Captura de pantalla 2025-07-01 204424.png]]
+![tb](https://github.com/user-attachments/assets/b20afb52-53ff-4acb-81ad-7278a432f816)
+
+
 ### 4.2. Consumo de recursos
 
 ```
